@@ -1,0 +1,27 @@
+services:
+  piper_ros:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: piper_ros_container
+    working_dir: /workspace
+    volumes:
+      # Mount the local ros2_ws directory to the container's workspace/src
+      - ./ros2_ws:/workspace:rw
+      # Mount for X11 forwarding (GUI applications)
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      # Optional: Mount for device access (e.g., CAN interfaces)
+      # - /dev:/dev
+    environment:
+      # X11 forwarding for GUI applications (RViz, etc.)
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      # ROS 2 configuration
+      - ROS_DOMAIN_ID=26
+    network_mode: host
+    privileged: true # Required for device access, remove if not needed
+    stdin_open: true
+    tty: true
+    entrypoint: ["/ros_entrypoint.sh"]
+    command: bash
+    restart: unless-stopped
