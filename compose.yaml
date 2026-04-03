@@ -11,13 +11,20 @@ services:
       # Mount for X11 forwarding (GUI applications)
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       # Optional: Mount for device access (e.g., CAN interfaces)
-      # - /dev:/dev
+      - /dev:/dev
     environment:
       # X11 forwarding for GUI applications (RViz, etc.)
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
       # ROS 2 configuration
       - ROS_DOMAIN_ID=26
+    #devices:
+      # Event device (for joystick)
+      # Determine the correct event device for your joystick by running `ls /dev/input/` on the host
+      # Or by installing evtest and running `sudo evtest` to find the correct device
+      #- "/dev/input/event16:/dev/input/event16"
+      # Joystick event
+      #- "/dev/input/js0:/dev/input/js0"
     network_mode: host
     privileged: true # Required for device access, remove if not needed
     stdin_open: true
