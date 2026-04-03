@@ -23,7 +23,8 @@ RUN apt-get update && \
     python3-colcon-common-extensions \
     python3-pip \
     ethtool \
-    can-utils && \
+    can-utils \
+    iproute2 && \
     pip3 install piper_sdk python-can && \
     rm -rf /var/lib/apt/lists/*
 
